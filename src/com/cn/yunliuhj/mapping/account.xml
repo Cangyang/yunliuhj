@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.yunliuhj.dao.AccountDao">
+    <!-- http://limingnihao.iteye.com/blog/782190  http://www.bug315.com/article/12.htm -->
+    <resultMap id="AccountMap" type="com.cn.yunliuhj.pojo.Account">
+
+    </resultMap>
+
+    <insert id="add" parameterType="com.cn.yunliuhj.pojo.Account">
+        INSERT INTO Account (LoginName,
+                              AccountPwd,
+                              WeiXinName,
+                              OpenID,
+                              AccountName,
+                              Phone,
+                              Sex,
+                              GroupID,
+                              AccountType,
+                              LastTime,
+                              IsChuShiMiMa,
+                              IsDisabled,
+                              UserPic,
+                              RegistrationTime,
+                              OperatorDate,
+                              OperatorID)
+                      VALUES ( #{loginName},
+                               #{accountPwd},
+                               #{weiXinName},
+                               #{openId},
+                               #{accountName},
+                               #{phone},
+                               #{sex},
+                               #{groupId},
+                               #{accountType},
+                               #{lastTime,javaType=java.util.Date},
+                               #{isChuShiMiMa},
+                               #{isDisabled},
+                               #{userPic},
+                               #{registrationTime},
+                               #{operatorDate},
+                               #{operatorId})
+    </insert>
+
+    <update id="update" parameterType="com.cn.yunliuhj.pojo.Account">
+        UPDATE Account
+        <set>
+            <if test="accountName != null and accountName != '' ">
+                AccountName = #{accountName}
+            </if>
+            <if test="phone != null and phone != '' ">
+                Phone = #{phone}
+            </if>
+            <if test="sex != null and sex != '' ">
+                Sex = #{sex,jdbcType=int}
+            </if>
+            <if test="groupId != null and groupId != '' ">
+                GroupId = #{groupId}
+            </if>
+            <if test="accountType != null and accountType != '' ">
+                AccountType = #{accountType}
+            </if>
+            <if test="lastTime != null and lastTime != '' ">
+                LastTime = #{lastTime,javaType=java.util.Date}
+            </if>
+            <if test="isChuShiMiMa != null and isChuShiMiMa != '' ">
+                IsChuShiMiMa = #{isChuShiMiMa}
+            </if>
+            <if test="isDisabled != null and isDisabled != '' ">
+                IsDisabled = #{isDisabled}
+            </if>
+            <if test="userPic != null and userPic != '' ">
+                UserPic = #{userPic}
+            </if>
+            <if test="operationTime != null and operationTime != '' ">
+                OperationTime = #{operatorDate,javaType=java.util.Date}
+            </if>
+            <if test="operationId != null and operationId != '' ">
+                OperationId = #{operatorId}
+            </if>
+        </set>
+    </update>
+
+    <select id="queryByLoginName" parameterType="String" resultType="com.cn.yunliuhj.pojo.Account">
+        SELECT * FROM Account WHERE LoginName = #{loginName}
+    </select>
+
+    <select id="queryById" parameterType="int" resultType="com.cn.yunliuhj.pojo.Account">
+        SELECT * FROM Account WHERE ID = #{id}
+    </select>
+
+    <select id="query" parameterType="com.cn.yunliuhj.pojo.Account" resultType="com.cn.yunliuhj.pojo.Account">
+        SELECT * FROM Account WHERE 1=1
+            <choose>
+                <when test="weiXinName != null and weiXinName != '' ">
+                    AND WeiXinName LIKE '%' + #{weiXinName} + '%'
+                </when>
+                <when test="accountName != null and accountName != '' ">
+                    AND AccountName LIKE '%' + #{accountName} + '%'
+                </when>
+                <when test="phone != null and phone != '' ">
+                    AND Phone LIKE '%' + #{phone} + '%'
+                </when>
+                <when test="sex != null and sex != '' ">
+                    AND Sex = #{sex}
+                </when>
+                <when test="groupId != null and groupId != '' ">
+                    AND GroupId = #{groupId}
+                </when>
+                <when test="accountType != null and accountType != '' ">
+                    AND AccountType = #{accountType}
+                </when>
+                <when test="lastTime != null and lastTime != '' ">
+                    AND LastTime = #{lastTime}
+                </when>
+                <when test="isChuShiMiMa != null and isChuShiMiMa != '' ">
+                    AND IsChuShiMiMa = #{isChuShiMiMa}
+                </when>
+                <when test="isDisabled != null and isDisabled != '' ">
+                    AND IsDisabled = #{isDisabled}
+                </when>
+                <when test="registrationTime != null and registrationTime != '' ">
+                    AND RegistrationTime = #{registrationTime}
+                </when>
+                <when test="operationTime != null and operationTime 1= ''">
+                    AND OperatorDate = #{operatorDate}
+                </when>
+                <when test="OperatorId != null and OperatorId != '' ">
+                    AND OperatorID = #{OperatorId}
+                </when>
+            </choose>
+
+    </select>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM Account WHERE ID = #{id}
+    </delete>
+
+</mapper>
